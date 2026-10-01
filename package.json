@@ -1,0 +1,24 @@
+{
+  "name": "uvmxfz-vitmav42-nodejs-homework",
+  "version": "1.0.0",
+  "description": "Homework project for vitmav42",
+  "homepage": "https://github.com/uvmxfz-bme-computer-engineering/uvmxfz-vitmav42-nodejs-homework#readme",
+  "bugs": {
+    "url": "https://github.com/uvmxfz-bme-computer-engineering/uvmxfz-vitmav42-nodejs-homework/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uvmxfz-bme-computer-engineering/uvmxfz-vitmav42-nodejs-homework.git"
+  },
+  "license": "MIT",
+  "author": "UVMXFZ",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "mocha": "^12.0.3"
+  }
+}
