@@ -1,0 +1,37 @@
+GET /
+  Middleware: express.static('static')
+  Response: static/index.html
+
+Static pages
+------------
+GET /index.html
+  Middleware: express.static('static')
+  Response: Product catalogue and filters
+
+GET /index.html?category=cpu|gpu|ram|storage|motherboard
+  Middleware: express.static('static')
+  Response: Product catalogue with the selected category filter
+
+GET /cart.html
+  Middleware: express.static('static')
+  Response: Shopping cart and checkout form
+
+GET /orders.html
+  Middleware: express.static('static')
+  Response: Order tracking list
+
+GET /admin.html
+  Middleware: express.static('static')
+  Response: Product and category management
+
+Middleware order
+----------------
+1. express.static('static')
+   Serves files from the static directory. Existing files are returned
+   directly and unmatched requests continue to the next middleware.
+
+2. Route handlers
+   Add API or custom page handlers here when server-side behavior is needed.
+
+3. Error/404 middleware
+   Add after all route handlers so it can handle unmatched paths and errors.
