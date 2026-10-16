@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Orders | PC Components Shop</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+	<style>
+        .order-items td {
+            background: #f8f9fa;
+        }
+
+        .order-item + .order-item {
+            border-top: 1px solid #dee2e6;
+        }
+	</style>
+</head>
+<body class="bg-light">
+<header class="navbar navbar-dark bg-dark px-3"><a class="navbar-brand fw-bold" href="index.html">PC Components Shop</a>
+	<nav class="d-flex gap-3"><a class="text-white text-decoration-none" href="index.html">Categories</a><a
+			class="text-white text-decoration-none" href="cart.html">Cart</a><a class="text-white text-decoration-none"
+	                                                                            href="admin.html">Admin</a></nav>
+</header>
+<main class="container py-5"><h1 class="h2">Order tracking</h1>
+	<p class="text-muted mb-4">Track orders and keep customers informed.</p>
+	<div class="card">
+		<div class="table-responsive">
+			<table class="table align-middle mb-0">
+				<thead>
+				<tr>
+					<th>Order</th>
+					<th>Customer email</th>
+					<th>Created at</th>
+					<th>Last modified at</th>
+					<th>Items</th>
+					<th>Total</th>
+					<th>Status</th>
+					<th class="text-end">Details</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr>
+					<td class="fw-semibold">#1048</td>
+					<td><a href="mailto:anna.kiss@example.com">anna.kiss@example.com</a></td>
+					<td>2026-10-15 09:42</td>
+					<td>2026-10-15 12:18</td>
+					<td>3</td>
+					<td>$697.00</td>
+					<td><select class="form-select status-select">
+						<option>Processing</option>
+						<option>Shipped</option>
+						<option>Delivered</option>
+						<option>Cancelled</option>
+					</select></td>
+					<td class="text-end">
+						<button class="btn btn-sm btn-outline-dark info-button" type="button"
+						        aria-expanded="false" aria-controls="items-1048">i
+						</button>
+					</td>
+				</tr>
+				<tr class="order-items d-none" id="items-1048">
+					<td colspan="8">
+						<div class="p-2">
+							<div class="order-item d-flex justify-content-between align-items-center py-3">
+								<div><h2 class="h6 mb-1">AMD Ryzen 7 9800X3D</h2><small class="text-muted">CPU ·
+									Quantity: 1</small></div>
+								<strong>$479.00</strong>
+							</div>
+							<div class="order-item d-flex justify-content-between align-items-center py-3">
+								<div><h2 class="h6 mb-1">Kingston Fury 32 GB</h2><small class="text-muted">RAM ·
+									Quantity: 2</small></div>
+								<strong>$218.00</strong>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="fw-semibold">#1047</td>
+					<td><a href="mailto:balazs.nagy@example.com">balazs.nagy@example.com</a></td>
+					<td>2026-10-14 14:07</td>
+					<td>2026-10-15 08:31</td>
+					<td>3</td>
+					<td>$1,248.00</td>
+					<td><select class="form-select status-select">
+						<option>Processing</option>
+						<option selected>Shipped</option>
+						<option>Delivered</option>
+						<option>Cancelled</option>
+					</select></td>
+					<td class="text-end">
+						<button class="btn btn-sm btn-outline-dark info-button" type="button"
+						        aria-expanded="false" aria-controls="items-1047">i
+						</button>
+					</td>
+				</tr>
+				<tr class="order-items d-none" id="items-1047">
+					<td colspan="8">
+						<div class="p-2">
+							<div class="order-item d-flex justify-content-between align-items-center py-3">
+								<div><h2 class="h6 mb-1">GeForce RTX 4070 Super</h2><small class="text-muted">GPU ·
+									Quantity: 1</small></div>
+								<strong>$599.00</strong>
+							</div>
+							<div class="order-item d-flex justify-content-between align-items-center py-3">
+								<div><h2 class="h6 mb-1">AMD Ryzen 7 9800X3D</h2><small class="text-muted">CPU ·
+									Quantity: 1</small></div>
+								<strong>$479.00</strong>
+							</div>
+							<div class="order-item d-flex justify-content-between align-items-center py-3">
+								<div><h2 class="h6 mb-1">Kingston Fury 32 GB</h2><small class="text-muted">RAM ·
+									Quantity: 1</small></div>
+								<strong>$109.00</strong>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="fw-semibold">#1046</td>
+					<td><a href="mailto:eszter.toth@example.com">eszter.toth@example.com</a></td>
+					<td>2026-10-12 16:25</td>
+					<td>2026-10-13 10:04</td>
+					<td>1</td>
+					<td>$159.00</td>
+					<td><select class="form-select status-select">
+						<option>Processing</option>
+						<option>Shipped</option>
+						<option selected>Delivered</option>
+						<option>Cancelled</option>
+					</select></td>
+					<td class="text-end">
+						<button class="btn btn-sm btn-outline-dark info-button" type="button"
+						        aria-expanded="false" aria-controls="items-1046">i
+						</button>
+					</td>
+				</tr>
+				<tr class="order-items d-none" id="items-1046">
+					<td colspan="8">
+						<div class="p-2">
+							<div class="order-item d-flex justify-content-between align-items-center py-3">
+								<div><h2 class="h6 mb-1">Samsung 990 Pro 2 TB</h2><small class="text-muted">Storage ·
+									Quantity: 1</small></div>
+								<strong>$159.00</strong>
+							</div>
+						</div>
+					</td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div id="status-message" class="alert alert-success mt-3 d-none"></div>
+</main>
+<script>
+    document.querySelectorAll('.status-select').forEach(select => select.addEventListener('change', event => {
+        const row = event.target.closest('tr');
+        const message = document.getElementById('status-message');
+        message.textContent = `${row.cells[0].textContent} status updated to ${event.target.value}.`;
+        message.classList.remove('d-none');
+    }));
+
+    document.querySelectorAll('.info-button').forEach(button => button.addEventListener('click', () => {
+        const details = document.getElementById(button.getAttribute('aria-controls'));
+        const isHidden = details.classList.toggle('d-none');
+        button.setAttribute('aria-expanded', String(!isHidden));
+    }));
+</script>
+</body>
+</html>
