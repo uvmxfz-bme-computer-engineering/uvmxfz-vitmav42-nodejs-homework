@@ -7,6 +7,8 @@ const path = require('path');
 const mwPath = path.join(__dirname, '..', 'middlewares');
 
 ///////////////////////////////////////////////////////////////////////////////
+// View Middlewares
+const render = require(path.join(mwPath, 'render'));
 // Auth Middlewares
 const auth_authorize = require(path.join(mwPath, 'auth'));
 // Product Middlewares
@@ -41,6 +43,11 @@ const subscribeToRoutes = (app) => {
     subscribeProductMiddlewares(objects, app);
     subscribeCategoryMiddlewares(objects, app);
     subscribeOrderMiddlewares(objects, app);
+
+    app.get('/', product_readAll(objects), render(objects, 'index'));
+    app.get('/cart', render(objects, 'cart'));
+    app.get('/orders', auth_authorize(objects), render(objects, 'orders'));
+    app.get('/admin', auth_authorize(objects), render(objects, 'admin'));
 }
 
 /**
