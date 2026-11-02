@@ -48,11 +48,6 @@
 	</div>
 </div>
 <script>
-	document.getElementById("category-filter").addEventListener("change", (event) => {
-		const category = event.target.value;
-		window.location.href = category
-				? `?category=${encodeURIComponent(category)}`
-				: window.location.pathname;
-	});
+// Category filtering is handled by the sidebar links and server-side query.
 </script>
 <%- include('footer') %>
