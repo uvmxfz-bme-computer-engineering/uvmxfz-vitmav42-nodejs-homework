@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/uvmxfz', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+mongoose.connect('mongodb://localhost/uvmxfz');
 }).then(x => {
     console.log('Connected to MongoDB');
 }).catch(err => {
