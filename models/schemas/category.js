@@ -4,11 +4,11 @@ const Schema = require('mongoose').Schema;
  * Category document schema.
  *
  * @typedef {Object} Category
- * @property {import('mongoose').Types.ObjectId}      _id              Document id assigned by MongoDB.
  * @property {string}        name            Display name, unique.
  * @property {string}        slug            URL-safe identifier, unique.
  * @property {string}        description     Short description.
- * @property {import('mongoose').Types.ObjectId|null} _parentCategory Parent Category document; null for top-level categories.
+ * @property {string}        imageUrl        URL of the category's image.
+ * @property {Category|null}  _parentCategory Reference to the parent category, or null if top-level.
  * @property {Date}          createdAt       Set by the timestamps option.
  * @property {Date}          updatedAt       Set by the timestamps option.
  */
@@ -17,6 +17,8 @@ const categorySchema = new Schema({
     slug: { type: String, required: true, unique: true },
     description: { type: String, default: '' },
     _parentCategory: { type: Schema.Types.ObjectId, ref: 'Category', default: null },
+    imageUrl: { type: String, default: '' },
+    _products: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
 }, { timestamps: true });
 
 module.exports = categorySchema;

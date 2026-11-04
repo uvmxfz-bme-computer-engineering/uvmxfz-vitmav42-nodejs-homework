@@ -3,12 +3,15 @@
  *
  * @module routing
  */
-const path = require('path');
+const path = require('node:path');
 const mwPath = path.join(__dirname, '..', 'middlewares');
 
 ///////////////////////////////////////////////////////////////////////////////
 // View Middlewares
 const render = require(path.join(mwPath, 'render'));
+// Handler Middlewares
+const handle_error = require(path.join(mwPath, 'handlers', 'error'));
+const handle_notFound = require(path.join(mwPath, 'handlers', 'notFound'));
 // Auth Middlewares
 const auth_authorize = require(path.join(mwPath, 'auth'));
 // Product Middlewares
@@ -38,7 +41,11 @@ const order_readOne   = require(path.join(mwPath, 'order', 'readOne'));
  * @returns {void}
  */
 const subscribeToRoutes = (app) => {
-    const objects = {};
+    const objects = {
+        Product: require('./models/product'),
+        Category: require('./models/category'),
+        Order: require('./models/order'),
+    };
 
     subscribeProductMiddlewares(objects, app);
     subscribeCategoryMiddlewares(objects, app);
@@ -48,6 +55,9 @@ const subscribeToRoutes = (app) => {
     app.get('/cart', render(objects, 'cart'));
     app.get('/orders', auth_authorize(objects), render(objects, 'orders'));
     app.get('/admin', auth_authorize(objects), render(objects, 'admin'));
+
+    app.use(handle_notFound);
+    app.use(handle_error);
 }
 
 /**

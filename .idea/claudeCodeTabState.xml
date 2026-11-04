@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ClaudeCodeTabState">
+    <option name="tabSessions">
+      <map>
+        <entry key="0">
+          <value>
+            <TabSessionState>
+              <option name="projectPath" value="C:\XSourceCodesX\0_BME_VITMAV42___NodeJS\uvmxfz-vitmav42-nodejs-homework" />
+              <option name="provider" value="claude" />
+              <option name="sessionId" value="d709c583-6003-4f07-9c55-7fcdf970df32" />
+              <option name="cwd" value="C:\XSourceCodesX\0_BME_VITMAV42___NodeJS\uvmxfz-vitmav42-nodejs-homework" />
+              <option name="model" value="claude-haiku-4-5" />
+              <option name="permissionMode" value="plan" />
+            </TabSessionState>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
