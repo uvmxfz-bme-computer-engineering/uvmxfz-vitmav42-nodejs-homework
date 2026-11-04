@@ -41,6 +41,6 @@ subscribeToRoutes(app);
 app.set('view engine', 'ejs');
 
 // start the server
-const server = app.listen(port, function startServer() {
+app.listen(port, function startServer() {
   console.log('Server running at http://localhost:' + port);
 });
