@@ -7,7 +7,9 @@
 module.exports = (objects) => {
     return async (req, res, next) => {
         try {
-            next();
+            const productId = req.params.id;
+            await objects.ProductModel.findByIdAndDelete(productId);
+            res.redirect('/admin');
         } catch (error) {
             next(error);
         }

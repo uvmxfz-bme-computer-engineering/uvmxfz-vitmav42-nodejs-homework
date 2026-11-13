@@ -15,7 +15,7 @@ const orderItemSchema = require('./orderItem');
  * @property {string}           modifiedAt      ISO 8601 last-modification timestamp.
  */
 
-const ORDER_STATUSES = ['pending', 'paid', 'shipped', 'completed', 'cancelled'];
+const ORDER_STATUSES = Object.values(require('../statuses').ORDER);
 
 const emailValidator = require("email-validator");
 
@@ -48,15 +48,5 @@ const orderSchema = new Schema(
   },
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } },
 );
-
-const round2 = (value) => Math.round(value * 100) / 100;
-
-orderSchema.virtual('itemCount').get(function () {
-    return (this.items ?? []).reduce((sum, item) => sum + (item.quantity ?? 0), 0);
-});
-
-orderSchema.virtual('total').get(function () {
-    return round2((this.items ?? []).reduce((sum, item) => sum + (item.netTotal ?? 0), 0));
-});
 
 module.exports = orderSchema;

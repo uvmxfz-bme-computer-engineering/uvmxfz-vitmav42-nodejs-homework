@@ -7,30 +7,31 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "start": "pm2 startOrReload ecosystem.config.cjs && pm2 monit",
+    "start:db": "mongod --dbpath ./DB --port 27017 --logpath ./DB/mongod.log --logappend",
     "start:app": "node --watch index.js",
-    "start:db": "mongod --dbpath ./db --port 27017 --logpath ./db/mongod.log --logappend",
+    "stop": "mongod --shutdown",
     "test": "mocha --recursive",
     "docs": "jsdoc -c jsdoc.conf.json",
     "clean:docs": "rm -rf docs",
-    "build:docs": "npm run clean:docs && npm run docs",
-    "daemon:stop": "pm2 delete ecosystem.config.cjs",
-    "daemon:logs": "pm2 logs"
+    "build:docs": "npm run clean:docs && npm run docs"
   },
   "engines": {
     "node": ">=20"
   },
   "dependencies": {
     "body-parser": "^2.4.0",
-    "bootstrap": "^5.3.8",
     "ejs": "^7.0.2",
     "email-validator": "^2.0.4",
     "express": "^5.2.1",
+    "express-session": "^1.19.0",
     "i18next": "^26.7.1",
     "i18next-fs-backend": "^2.6.10",
     "i18next-http-middleware": "^3.10.0",
     "mongoose": "^9.11.4",
-    "pm2": "^7.1.2"
+    "morgan": "^1.12.1",
+    "multer": "^2.5.0",
+    "pm2": "^7.1.2",
+    "serve-favicon": "^2.5.1"
   },
   "devDependencies": {
     "jsdoc": "^4.0.5",

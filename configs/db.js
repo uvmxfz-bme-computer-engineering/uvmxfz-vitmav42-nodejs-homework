@@ -17,4 +17,4 @@ mongoose.connect(uri).then(() => {
     console.error('Failed to connect to MongoDB', err);
 });
 
-module.exports = mongoose;
+module.exports = mongoose; 

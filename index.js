@@ -1,3 +1,11 @@
+const favicon    = require("serve-favicon");
+const path       = require("node:path");
+const fs         = require("node:fs");
+const logger     = require("morgan");
+const express    = require("express");
+const session    = require("express-session");
+const bodyParser = require("body-parser");
+
 /**
  * Application entry point for the PC Components Shop API.
  *
@@ -6,14 +14,42 @@
  *
  * @module index
  */
-const express = require('express');
+const isProd = process.env.NODE_ENV === "production";
+
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Serve uploaded files from the "uploads" directory
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+//
+
+// Serve static files from the "public" directory
+app.use("/public", express.static(path.join(__dirname, "public")));
+//
+
+// Favicon middleware
+app.use(favicon(path.join(__dirname, "public", "icons", "favicon.ico")));
+//
+
+// Logging middleware
+app.use(logger(isProd ? "combined" : "dev"));
+//
+
 // parse application/x-www-form-urlencoded and application/json
-const bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+//
+
+// set up session management
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "supasecret",
+    cookie: { secure: isProd, maxAge: 1000 * 60 * 60 * 24 }, // HTTPS-only in prod
+    resave: false,
+    saveUninitialized: false,
+  }),
+);
+//
 
 /*
 // translations
@@ -34,13 +70,16 @@ app.use(i18nextMW.handle(i18next));
 */
 
 // subscribe middlewares
-const subscribeToRoutes = require('./routing/routing');
+const subscribeToRoutes = require("./routing");
 subscribeToRoutes(app);
+//
 
 // serve views files from the "views" directory
-app.set('view engine', 'ejs');
+app.set("view engine", "ejs");
+//
 
 // start the server
 app.listen(port, function startServer() {
-  console.log('Server running at http://localhost:' + port);
+  console.log("Server running at http://localhost:" + port);
 });
+//

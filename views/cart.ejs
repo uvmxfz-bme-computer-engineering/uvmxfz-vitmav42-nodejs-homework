@@ -1,58 +1,103 @@
 <%- include('header') %>
 <main class="container py-5">
-	<div class="d-flex justify-content-between align-items-center mb-4">
-		<div><h1 class="h2">Shopping cart</h1>
-			<p class="text-muted">Review your components before checkout.</p></div>
-		<a class="btn btn-outline-dark" href="/">Continue shopping</a></div>
-	<div class="row g-4">
-		<section class="col-lg-8">
-			<div class="card">
-				<div class="card-body">
-					<div class="d-flex justify-content-between border-bottom pb-3 mb-3">
-						<div><h2 class="h5 mb-1">AMD Ryzen 7 9800X3D</h2><small class="text-muted">CPU · In
-							stock</small></div>
-						<div class="d-flex align-items-center gap-3"><input class="form-control" type="number" value="1"
-						                                                    min="1"
-						                                                    style="width:80px"><strong>$479.00</strong>
-							<button class="btn btn-sm btn-outline-danger">Remove</button>
-						</div>
-					</div>
-					<div class="d-flex justify-content-between">
-						<div><h2 class="h5 mb-1">Kingston Fury 32 GB</h2><small class="text-muted">RAM · In
-							stock</small></div>
-						<div class="d-flex align-items-center gap-3"><input class="form-control" type="number" value="2"
-						                                                    min="1"
-						                                                    style="width:80px"><strong>$218.00</strong>
-							<button class="btn btn-sm btn-outline-danger">Remove</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-		<aside class="col-lg-4">
-			<form class="card" id="checkout-form">
-				<div class="card-body"><h2 class="h5">Order summary</h2>
-					<div class="d-flex justify-content-between"><span>Subtotal</span><strong>$697.00</strong></div>
-					<div class="d-flex justify-content-between border-bottom pb-3 mb-3"><span>Shipping</span><span
-							class="text-success">Free</span></div>
-					<div class="mb-3">
-						<label class="form-label fw-semibold" for="customer-email">Email address</label>
-						<input class="form-control" id="customer-email" name="email" type="email"
-						       placeholder="you@example.com" autocomplete="email" required>
-						<div class="form-text">Required for your order confirmation.</div>
-					</div>
-					<div class="d-flex justify-content-between fs-5"><strong>Total</strong><strong>$697.00</strong>
-					</div>
-					<button class="btn btn-dark w-100 mt-4" type="submit">Proceed to checkout</button>
-				</div>
-			</form>
-		</aside>
-	</div>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="h2">Shopping cart</h1>
+      <p class="text-muted">Review your components before checkout.</p>
+    </div>
+    <a class="btn btn-outline-dark" href="/">Continue shopping</a>
+  </div>
+  <div class="row g-4">
+    <section class="col-lg-8">
+      <div class="card">
+        <div class="card-body">
+          <% if (cartItems.length === 0) { %>
+          <div class="text-center py-5">
+            <h2 class="h5 mb-2">Your cart is empty</h2>
+            <p class="text-muted mb-4">Add some components to get started.</p>
+            <a class="btn btn-dark" href="/">Browse products</a>
+          </div>
+          <% } else { %>
+          <% cartItems.forEach((item, index) => { %>
+          <div class="d-flex justify-content-between align-items-center<%= index < cartItems.length - 1 ? ' border-bottom pb-3 mb-3' : '' %>">
+            <div>
+              <h2 class="h5 mb-1"><%= item.product.name %></h2>
+              <small class="text-muted">
+                <%= item.product._category ? item.product._category.name : '-' %>
+                / <%= item.product.stock %> in stock
+              </small>
+            </div>
+            <div class="d-flex align-items-center gap-3">
+              <form class="d-flex align-items-center gap-2" method="post" action="/cart/update/<%= item.product._id %>">
+                <input
+                  id="quantity-<%= item.product._id %>"
+                  class="form-control"
+                  type="number"
+                  name="quantity"
+                  value="<%= item.quantity %>"
+                  min="1"
+                  max="<%= item.product.stock %>"
+                  style="width: 80px"
+                />
+                <button class="btn btn-sm btn-outline-secondary" type="submit">Update</button>
+              </form>
+              <strong class="cart-line-total">$<%= item.lineTotal.toFixed(2) %></strong>
+              <form method="post" action="/cart/delete/<%= item.product._id %>">
+                <button class="btn btn-sm btn-outline-danger" type="submit">Remove</button>
+              </form>
+            </div>
+          </div>
+          <% }); %>
+          <% } %>
+        </div>
+      </div>
+    </section>
+    <aside class="col-lg-4">
+      <form class="card" id="checkout-form" method="post" action="/order/create">
+        <div class="card-body">
+          <h2 class="h5">Order summary</h2>
+          <div class="d-flex justify-content-between">
+            <span>Subtotal</span>
+			      <strong>$<%= cartSubtotal.toFixed(2) %></strong>
+          </div>
+          <div class="d-flex justify-content-between border-bottom pb-3 mb-3">
+            <span>Shipping</span>
+            <span class="text-success">Free</span>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold" for="customer-email">Email address</label>
+            <input
+              class="form-control"
+              id="customer-email"
+              name="customerEmail"
+              type="email"
+              placeholder="you@example.com"
+              autocomplete="email"
+              value="you@example.com"
+              required
+            />
+            <div class="form-text">Required for your order confirmation.</div>
+          </div>
+          <div class="d-flex justify-content-between fs-5">
+            <strong>Total</strong>
+			      <strong>$<%= cartSubtotal.toFixed(2) %></strong>
+          </div>
+          <button class="btn btn-dark w-100 mt-4" type="submit" <%= cartItems.length === 0 ? 'disabled' : '' %>>
+            Submit order
+          </button>
+        </div>
+      </form>
+    </aside>
+  </div>
 </main>
 <script>
-    document.getElementById('checkout-form').addEventListener('submit', event => {
+  document
+    .getElementById("checkout-form")
+    .addEventListener("submit", (event) => {
+      event.currentTarget.classList.add("was-validated");
+      if (!event.currentTarget.checkValidity()) {
         event.preventDefault();
-        event.currentTarget.classList.add('was-validated');
+      }
     });
 </script>
 <%- include('footer') %>

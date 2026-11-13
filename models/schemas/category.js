@@ -16,8 +16,6 @@ const categorySchema = new Schema({
     name: { type: String, required: true, unique: true },
     slug: { type: String, required: true, unique: true },
     description: { type: String, default: '' },
-    _parentCategory: { type: Schema.Types.ObjectId, ref: 'Category', default: null },
-    imageUrl: { type: String, default: '' },
     _products: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
 }, { timestamps: true });
 

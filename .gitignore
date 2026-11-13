@@ -142,5 +142,9 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
 
-# Database
+# Database (the directory is spelled `DB` on disk)
 /db/
+/DB/
+
+# User-uploaded product images
+/uploads/

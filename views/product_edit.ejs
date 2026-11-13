@@ -1,0 +1,207 @@
+<%- include('header') %>
+<main class="container py-5">
+	<div
+		class="mb-4"
+		id="new-product-form"
+	>
+	<h1 class="h2 mb-2">
+		Edit Product
+	</h1>
+		<form
+			class="card card-body"
+			id="product-form"
+			method="post"
+			action="/product/edit/<%= product._id %>"
+			enctype="multipart/form-data"
+		>
+			<div
+				class="row g-3 mb-3"
+			>
+				<div
+					class="col-6 col-md-2"
+				>
+					<label
+						class="form-label"
+						for="product-name"
+					>
+						Product name*
+					</label>
+					<input
+						class="form-control"
+						id="product-name"
+						name="name"
+						value="<%= product.name %>"
+						required
+					>
+				</div>
+				<div
+					class="col-6 col-md-2"
+				>
+					<label
+						class="form-label"
+						for="product-ean"
+					>
+						EAN*
+					</label>
+					<input
+						class="form-control"
+						id="product-ean"
+						name="ean"
+						value="<%= product.ean %>"
+						pattern="\d{8}|\d{12,14}"
+						title="8, 12, 13 or 14 digits"
+						required
+					>
+				</div>
+				<div
+					class="col-6 col-md-2"
+				>
+					<label
+						class="form-label"
+						for="product-status"
+					>
+						Status
+					</label>
+					<select
+						class="form-select"
+						id="product-status"
+						value="<%= product.status %>"
+						name="status"
+					>
+						<% Object.values(statuses.PRODUCT).forEach((status) => { %>
+						<option
+							value="<%= status %>"
+							<%= (product.status || statuses.PRODUCT.DRAFT) === status ? 'selected' : '' %>
+						>
+							<%= status.charAt(0).toUpperCase() + status.slice(1) %>
+						</option>
+						<% }) %>
+					</select>
+				</div>
+				<div
+					class="col-6 col-md-2"
+				>
+					<label
+						class="form-label"
+						for="product-price"
+					>
+						Price (USD)*
+					</label>
+					<input
+						class="form-control"
+						id="product-price"
+						name="price"
+						value="<%= product.price %>"
+						type="number"
+						min="0"
+						step="0.01"
+						required
+					>
+				</div>
+				<div
+					class="col-6 col-md-2"
+				>
+					<label
+						class="form-label"
+						for="product-stock"
+					>
+						Stock
+					</label>
+					<input
+						class="form-control"
+						id="product-stock"
+						name="stock"
+						value="<%= product.stock %>"
+						type="number"
+						min="0"
+						value="0"
+					>
+				</div>
+				<div
+					class="col-6 col-md-2"
+				>
+					<label
+						class="form-label"
+						for="product-category"
+					>
+						Category
+					</label>
+					<select
+						class="form-select"
+						id="product-category"
+						name="_category"
+					>
+						<option
+							value=""
+							<%= !product._category ? 'selected' : '' %>
+						>
+							-
+						</option>
+						<% (categories || []).forEach((category) => { %>
+						<option
+							value="<%= category._id %>"
+							<%= product._category && String(product._category._id) === String(category._id) ? 'selected' : '' %>
+						>
+							<%= category.name %>
+						</option>
+						<% }) %>
+					</select>
+				</div>
+			</div>
+			<div
+				class="row g-3 mb-3"
+			>
+				<div
+					class="col-12"
+				>
+					<label
+						class="form-label"
+						for="product-description"
+					>
+						Description
+					</label>
+					<textarea
+						class="form-control"
+						id="product-description"
+						name="description"
+						value="<%= product.description %>"
+						rows="2"
+					></textarea>
+				</div>
+			</div>
+			<div
+				class="row g-3"
+			>
+				<div
+					class="col-md-9"
+				>
+					<label
+						class="form-label"
+						for="product-image"
+					>
+						Image
+					</label>
+					<input
+						class="form-control"
+						id="product-image"
+						name="image"
+						value="<%= product.imageUrl %>"
+						type="file"
+						accept="image/jpeg,image/png,image/webp"
+					>
+				</div>
+				<div
+					class="col-md-3 d-flex align-items-end gap-2"
+				>
+					<button
+						class="btn btn-success w-100"
+						type="submit"
+					>
+						Edit
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</main>
+<%- include('footer') %>

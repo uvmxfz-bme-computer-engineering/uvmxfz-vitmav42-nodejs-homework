@@ -20,10 +20,5 @@ module.exports = (err, req, res, next) => {
             ? 'Something went wrong!'
             : err.message;
 
-        res.status(statusCode).json({
-            error: {
-                message: message,
-                ...(process.env.NODE_ENV !== 'production' && {stack: err.stack})
-            }
-        });
+        res.status(statusCode).render('error', { title: 'Error', message, stack: err.stack });
 };

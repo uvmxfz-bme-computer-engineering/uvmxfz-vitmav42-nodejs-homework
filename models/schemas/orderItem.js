@@ -8,18 +8,11 @@ const Schema = require('mongoose').Schema;
  * @property {import('mongoose').Types.ObjectId} _product Referenced Product document at time of ordering.
  * @property {number} quantity  Units ordered, >= 1.
  * @property {number} unitPrice Price per unit at time of ordering.
- * @property {number} netTotal  Derived: quantity * unitPrice (virtual, not persisted).
  */
 const orderItemSchema = new Schema({
     _product: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
     quantity: { type: Number, required: true, min: 1 },
     unitPrice: { type: Number, required: true, min: 0 },
-}, { _id: false, toJSON: { virtuals: true }, toObject: { virtuals: true } });
-
-const round2 = (value) => Math.round(value * 100) / 100;
-
-orderItemSchema.virtual('netTotal').get(function () {
-    return round2((this.quantity ?? 0) * (this.unitPrice ?? 0));
-});
+}, { _id: false });
 
 module.exports = orderItemSchema;

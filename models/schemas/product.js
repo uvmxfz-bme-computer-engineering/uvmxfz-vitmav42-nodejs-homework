@@ -1,13 +1,14 @@
 const Schema = require('mongoose').Schema;
+const statuses = require('../statuses');
 
-const PRODUCT_STATUSES = Object.freeze(['draft', 'active', 'out_of_stock', 'discontinued']);
+const PRODUCT_STATUSES = Object.values(statuses.PRODUCT);
 
 /**
  * Product document schema.
  *
  * @typedef {Object} Product
  * @property {import('mongoose').Types.ObjectId}      _id         Document id assigned by MongoDB.
- * @property {string}      sku         Stock keeping unit, unique per product.
+ * @property {string}      ean         EAN-13 barcode number.
  * @property {string}      name        Display name.
  * @property {string}      description Short marketing/technical description.
  * @property {string}      brand       Manufacturer or brand name.
@@ -20,17 +21,18 @@ const PRODUCT_STATUSES = Object.freeze(['draft', 'active', 'out_of_stock', 'disc
  * @property {Date}        createdAt   Set by the timestamps option.
  * @property {Date}        updatedAt   Set by the timestamps option.
  */
-const productSchema = new Schema({
-    sku: { type: String, required: true, unique: true },
+const productSchema = new Schema(
+  {
+    ean: { type: String, match: /^\d{8}$|^\d{12,14}$/, unique: true, required: true, sparse: true, },
     name: { type: String, required: true },
-    description: { type: String, default: '' },
-    brand: { type: String, default: '' },
+    description: { type: String, default: null },
     price: { type: Number, required: true, min: 0 },
-    currency: { type: String, default: 'USD' },
     stock: { type: Number, default: 0, min: 0 },
-    imageUrl: { type: String, default: '' },
-    status: { type: String, default: 'draft', enum: PRODUCT_STATUSES },
-    _category: { type: Schema.Types.ObjectId, ref: 'Category', default: null },
-}, { timestamps: true });
+    imageUrl: { type: String, default: null },
+    status: { type: String, default: "draft", enum: PRODUCT_STATUSES },
+    _category: { type: Schema.Types.ObjectId, ref: "Category" },
+  },
+  { timestamps: true },
+);
 
 module.exports = productSchema;
