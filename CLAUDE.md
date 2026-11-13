@@ -53,18 +53,22 @@ Token-efficient output:
 ## Architecture
 
 - `index.js` — entry point. Creates the Express app, registers `body-parser` (urlencoded + json), sets EJS as the view engine, delegates route registration to `routing/routing.js`, starts the server.
-- `routing/routing.js` — the single place where every route is registered. It creates one shared `objects = {}` bag and passes it to every middleware factory; then registers page routes (`/`, `/cart`, `/orders`, `/admin`) plus the product/category/order CRUD routes.
+- `routing/routing.js` — the single place where every route is registered. It creates one shared `objects = {}` bag and passes it to every middleware factory; then registers page routes (`/`, `/cart`, `/orders`, `/admin`) plus the product/category/cart/order routes.
 - `middlewares/<resource>/<action>.js` — one factory per action: `createOne`, `readAll`, `readOne`, `editOne`, `deleteOne`. Each file exports `(objects) => async (req, res, next) => { ... }`. Always export the factory — never the handler directly.
+- `middlewares/product/upload.js` — multer factory that accepts a single `image` field, stores it under `uploads/` (served at `/uploads`, gitignored), and rejects non-image files over 5 MB.
 - `middlewares/render.js` — factory `(objects, view)` returning middleware that calls `res.render(view, res.locals)`.
 - `middlewares/auth.js` — authorization factory for protected routes. The session/admin checks are commented out, so it currently just calls `next()`.
+- `middlewares/cart/*` — session-backed cart: `count` (global, sets `res.locals.cartCount`), `read` (hydrates `cartItems`/`cartSubtotal` for `/cart`), `addOne`, `setQuantity`, `deleteOne`, `clear`. Routes: `POST /cart/add/:id`, `/cart/update/:id`, `/cart/delete/:id`, `/cart/clear`.
+- `utils/cart.js` — pure helpers over `req.session.cart` (`{ productId, quantity }` pairs): read/merge, add, set quantity, remove, clear, hydrate against database products, subtotal. Product data is always resolved from MongoDB, never trusted from the session.
 - `views/*.ejs` — pages (`index`, `cart`, `orders`, `admin`, `auth`) and shared partials (`header`, `footer`, `sidebar`). Middleware populates `res.locals` before `render` uses it.
+- `views/admin/{product,category,order}.ejs` — self-contained management sections (markup, message element, and its DOM-only script). `admin.ejs` includes all three; `orders.ejs` includes only `admin/order`.
 
 ## Conventions
 
 - Keep the JSDoc header at the top of every module — every source file follows this style.
 - Add resource behavior as a new middleware factory in `middlewares/<resource>/`, then wire it in `routing/routing.js` (import it, add the route inside the matching `subscribe*Middlewares` function).
 - Pass shared state/data through the `objects` bag rather than module-level globals.
-- Routes are GET-only. "Create/edit/delete" are GET paths (`/product/create`, `/product/edit/:id`, ...), not REST verbs.
+- Routes are GET-only except cart mutations (`POST /cart/add/:id`, `/cart/update/:id`, `/cart/delete/:id`, `/cart/clear`). "Create/edit/delete" for products/categories/orders are GET paths (`/product/create`, `/product/edit/:id`, ...), not REST verbs.
 - Use 4-space indentation in JS; match the surrounding file in views (some templates use tabs).
 - Reuse EJS partials via `<%- include(...) %>` instead of duplicating markup.
 
@@ -72,8 +76,8 @@ Token-efficient output:
 
 - `product/readAll` returns a hardcoded fixture list and filters by `?category=` (case-insensitive, keeps only `stock > 0` and `price > 0`).
 - `product/readOne`, all category/order middlewares, and every create/edit/delete middleware are no-op stubs that just call `next()`.
-- `admin.ejs` and `orders.ejs` contain hardcoded demo rows; their client-side JS only updates the DOM (no backend calls).
-- There is no persistence layer. Adding one means introducing a model/service and passing it through the `objects` bag.
+- The `views/admin/*` partials contain hardcoded demo rows; their client-side JS only updates the DOM (no backend calls).
+- The cart is stored in `req.session.cart` (default MemoryStore) and hydrated from MongoDB on each `/cart` render; there is no client-side cart script.
 
 ## Git
 
