@@ -7,6 +7,8 @@
 module.exports = (objects) => {
     return async (req, res, next) => {
         try {
+            const categories = await objects.CategoryModel.find().lean();
+            res.locals.categories = categories;
             next();
         } catch (error) {
             next(error);

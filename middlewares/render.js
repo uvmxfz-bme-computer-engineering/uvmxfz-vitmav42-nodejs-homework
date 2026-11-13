@@ -8,6 +8,7 @@
 module.exports = (objects, view) => {
     return async (req, res, next) => {
         try {
+            console.log(`${JSON.stringify(res.locals)}`);
             res.render(view, res.locals);
         } catch (error) {
             next(error);

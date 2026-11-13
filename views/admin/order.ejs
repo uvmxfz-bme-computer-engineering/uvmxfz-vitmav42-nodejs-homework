@@ -1,0 +1,113 @@
+<section id="order-management">
+	<% const orderStatuses = Object.values(statuses.ORDER); %>
+	<% const orderTotal = (order) => (order.items || []).reduce((sum, item) => sum + item.unitPrice * item.quantity, 0); %>
+	<div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+		<div><h1 class="h2">Order tracking &amp; management</h1>
+			<p class="text-muted mb-0">Track orders and keep customers informed.</p></div>
+	</div>
+	<div class="card">
+		<div class="table-responsive">
+			<table class="table align-middle mb-0" id="order-table">
+				<thead>
+				<tr>
+					<th scope="col">Order #</th>
+					<th scope="col">Customer email</th>
+					<th scope="col">Order Total</th>
+					<th scope="col">Created At</th>
+					<th scope="col">Updated At</th>
+					<th scope="col">Note</th>
+					<th scope="col">Status</th>
+					<th class="text-end" scope="col">Actions</th>
+				</tr>
+				</thead>
+				<tbody>
+				<% if (orders.length === 0) { %>
+					<tr>
+						<td colspan="<%= 8 %>" class="text-center text-muted">no orders found :(</td>
+					</tr>
+				<% } else { %>
+					<% orders.forEach(order => { %>
+						<tr>
+							<td><%= order._id || 'N/A' %></td>
+							<td>
+								<a href="mailto:<%= order.customerEmail %>"><%= order.customerEmail || 'N/A' %></a>
+							</td>
+							<td>$<%= orderTotal(order).toFixed(2) %></td>
+							<td><%= order.createdAt.toLocaleString() %></td>
+							<td><%= order.updatedAt.toLocaleString() %></td>
+							<td><%= order.notes || '-' %></td>
+							<td>
+								<form method="post" action="/order/edit/<%= order._id %>">
+									<div class="btn-group btn-group-sm" aria-label="Status of order <%= order._id %>">
+										<% Object.values(statuses.ORDER).forEach((status) => { %>
+										<input
+											class="btn-check order-status-input"
+											type="radio"
+											name="status"
+											id="order-status-<%= order._id %>-<%= status %>"
+											value="<%= status %>"
+											autocomplete="off"
+											<%= status === order.status ? 'checked' : '' %>
+										>
+										<label
+											class="btn btn-outline-secondary"
+											for="order-status-<%= order._id %>-<%= status %>"
+										>
+											<%= status.charAt(0).toUpperCase() + status.slice(1) %>
+										</label>
+										<% }) %>
+									</div>
+									<noscript>
+										<button class="btn btn-sm btn-outline-secondary mt-2" type="submit">Save status</button>
+									</noscript>
+								</form>
+							</td>
+							<td class="text-end">
+								<button class="btn btn-sm btn-outline-primary info-button" type="button" aria-controls="items-<%= order._id %>" aria-expanded="false">
+									View
+								</button>
+								<a class="btn btn-sm btn-outline-danger delete-button" href="/order/delete/<%= order._id %>" aria-controls="items-<%= order._id %>" aria-expanded="false">
+									Delete
+								</a>
+							</td>
+						</tr>
+						<tr class="order-items d-none" id="items-<%= order._id %>">
+							<td colspan="8">
+								<div>
+									<% (order.items || []).forEach(item => { %>
+										<div class="order-item d-flex justify-content-between align-items-center">
+											<div>
+												<h2 class="h6 mb-1"><%= item._product ? item._product.name : 'N/A (Deleted product)' %></h2>
+												<small class="text-muted">
+													<%= item._product && item._product._category ? item._product._category.name : '-' %> / <%= item.quantity %> pcs
+												</small>
+											</div>
+											<strong>$<%= (item.unitPrice * item.quantity).toFixed(2) %></strong>
+										</div>
+									<% }); %>
+								</div>
+							</td>
+						</tr>
+					<% }); %>
+				<% } %>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div id="order-message" class="alert alert-success mt-3 d-none"></div>
+</section>
+<script>
+	document.querySelectorAll('.order-status-input').forEach((input) => {
+		input.addEventListener('change', () => input.form.requestSubmit());
+	});
+
+	document.querySelectorAll('.info-button').forEach((button) => {
+		button.textContent = 'View';
+		button.addEventListener('click', () => {
+			const details = document.getElementById(button.getAttribute('aria-controls'));
+			const isHidden = details.classList.toggle('d-none');
+			button.setAttribute('aria-expanded', String(!isHidden));
+			button.textContent = isHidden ? 'View' : 'Hide';
+		});
+	});
+</script>

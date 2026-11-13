@@ -1,0 +1,13 @@
+<%- include('header') %>
+<main class="container py-5 d-flex flex-column align-items-center justify-content-center" style="min-height: calc(100vh - 56px)">
+	<div class="mb-4 text-center">
+		<h1 class="h1 mb-2"><%= title %></h1>
+		<p class="lead">An error occurred while processing your request.</p>
+        <p><% message %></p>
+        <% if (stack) { %>
+            <pre><%= stack %></pre>
+        <% } %>
+		<a class="btn btn-dark" href="/">Return to Home</a>
+	</div>
+</main>
+<%- include('footer') %>

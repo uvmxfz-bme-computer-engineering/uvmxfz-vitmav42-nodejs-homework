@@ -7,6 +7,12 @@
 module.exports = (objects) => {
     return async (req, res, next) => {
         try {
+            const orders = await objects.OrderModel
+                .find()
+                .populate({ path: 'items._product', populate: { path: '_category' } })
+                .lean()
+                .exec();
+            res.locals.orders = orders;
             next();
         } catch (error) {
             next(error);

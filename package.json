@@ -1,27 +1,39 @@
 {
   "name": "uvmxfz-vitmav42-nodejs-homework",
-  "version": "1.0.0",
+  "version": "5.0.0",
   "description": "Homework project for vitmav42",
-  "homepage": "https://github.com/uvmxfz-bme-computer-engineering/uvmxfz-vitmav42-nodejs-homework#readme",
-  "bugs": {
-    "url": "https://github.com/uvmxfz-bme-computer-engineering/uvmxfz-vitmav42-nodejs-homework/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/uvmxfz-bme-computer-engineering/uvmxfz-vitmav42-nodejs-homework.git"
-  },
   "license": "MIT",
-  "author": "UVMXFZ",
+  "author": "Bokor Adam (UVMXFZ)",
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start:db": "mongod --dbpath ./DB --port 27017 --logpath ./DB/mongod.log --logappend",
+    "start:app": "node --watch index.js",
+    "stop": "mongod --shutdown",
+    "test": "mocha --recursive",
+    "docs": "jsdoc -c jsdoc.conf.json",
+    "clean:docs": "rm -rf docs",
+    "build:docs": "npm run clean:docs && npm run docs"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "dependencies": {
     "body-parser": "^2.4.0",
-    "bootstrap": "^5.3.8",
     "ejs": "^7.0.2",
+    "email-validator": "^2.0.4",
     "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "i18next": "^26.7.1",
+    "i18next-fs-backend": "^2.6.10",
+    "i18next-http-middleware": "^3.10.0",
+    "mongoose": "^9.11.4",
+    "morgan": "^1.12.1",
+    "multer": "^2.5.0",
+    "pm2": "^7.1.2",
+    "serve-favicon": "^2.5.1"
+  },
+  "devDependencies": {
     "jsdoc": "^4.0.5",
     "mocha": "^12.0.3"
   }

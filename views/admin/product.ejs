@@ -1,0 +1,109 @@
+<section
+	id="product-management"
+>
+	<div
+		class="d-flex flex-wrap justify-content-between align-items-center mb-4"
+	>
+		<div>
+			<h1
+				class="h2"
+			>
+				Product management
+			</h1>
+			<p
+				class="text-muted mb-0"
+			>
+				Edit the catalog or add a new component.
+			</p>
+		</div>
+		<a
+			class="btn btn-dark"
+			type="button"
+			href="product/create"
+		>
+			Add new product
+		</a>
+	</div>
+	<div
+		class="card"
+	>
+		<div
+			class="table-responsive"
+		>
+			<table
+				class="table align-middle mb-0"
+				id="product-table"
+			>
+				<thead>
+					<tr>
+						<th scope="col" class="text-center">Image</th>
+						<th scope="col">Name</th>
+						<th scope="col">EAN</th>
+						<th scope="col">Category</th>
+						<th scope="col">Price (USD)</th>
+						<th scope="col">Stock</th>
+						<th scope="col">Description</th>
+						<th scope="col">Created At</th>
+						<th scope="col">Updated At</th>
+						<th scope="col">Status</th>
+						<th class="text-end">Actions</th> 
+					</tr>
+				</thead>
+				<tbody>
+					<% if (products.length === 0) { %>
+					<tr>
+						<td colspan="<%= 11 %>" class="text-center text-muted" >no products found :(</td>
+					</tr>
+					<% } else { products.forEach((product) => { %>
+					<tr>
+						<td class="text-center">
+							<img
+								src="<%= product.imageUrl || 'https://via.placeholder.com/50x50?text=No+Image' %>"
+								alt="<%= product.name %>"
+								class="img-thumbnail"
+								style="max-width: 50px; max-height: 50px	;"
+							>
+						</td>
+						<td><%= product.name || '-' %></td>
+						<td><%= product.ean || '-' %></td>
+						<td><%= product._category ? product._category.name : '-' %></td>
+						<td>$<%= product.price %></td>
+						<td><%= product.stock %></td>
+						<td><%= product.description || '-' %></td>
+						<td><%= product.createdAt.toLocaleString() || 'N/A' %></td>
+						<td><%= product.updatedAt.toLocaleString() || 'N/A' %></td>
+						<td><%= product.status.charAt(0).toUpperCase() + product.status.slice(1) || '-' %></td>
+						<td class="text-end">
+							<a
+								class="btn btn-sm btn-outline-primary edit-btn"
+								href="/product/edit/<%= product._id %>"
+							>
+								Edit
+							</a>
+							<% if (product.status === statuses.PRODUCT.DRAFT || product.status === statuses.PRODUCT.RETIRED) { %>
+								<a
+									class="btn btn-sm btn-outline-danger delete-btn"
+									href="/product/delete/<%= product._id %>"
+								>
+									Delete
+								</a>
+							<% } else { %>
+								<a
+									class="btn btn-sm btn-outline-warning retire-btn"
+									href="/product/retire/<%= product._id %>"
+								>
+									Retire
+								</a>
+							<% } %>
+						</td>
+					</tr>
+					<% })} %>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div
+		id="product-message"
+		class="alert alert-success mt-3 d-none"
+	></div>
+</section>

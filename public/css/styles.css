@@ -1,0 +1,32 @@
+.product-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.sidebar-link {
+  color: #fff;
+  text-decoration: none;
+}
+
+.sidebar-link:hover,
+.sidebar-link.active {
+  text-decoration: underline;
+}
+
+.cart-line-total {
+  min-width: 5rem;
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
+.order-items td {
+  background: #f8f9fa;
+}
+
+.order-item + .order-item {
+  border-top: 1px solid #dee2e6;
+}
